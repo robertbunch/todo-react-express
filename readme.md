@@ -19,8 +19,8 @@ var config = {
 module.exports = config
 ```
 
-##Steps to deploy:
-###Back-end
+## Steps to deploy:
+### Back-end
 1. Clone the repository to AWS
 2. Enter the back-end folder
 3. npm install
@@ -31,7 +31,7 @@ module.exports = config
 8. Once you are test free, use pm2 to start bin/www
 9. Note the port you have chosen to run on
 
-###Front-end
+### Front-end
 1. Clone the repository to local
 2. Enter the front-end folder
 3. npm install
