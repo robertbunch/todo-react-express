@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import { Link } from 'react-router-dom';
-import HomeHeader from './HomeHeader'
+import { connect } from 'react-redux';
+import HomeHeader from './HomeHeader';
+import { bindActionCreators } from 'redux';
+import getToDoAction from './actions/getToDoAction';
+import formatDate from './utilities/formatDate';
 
 class Home extends Component{
 	constructor(props) {
 		super(props);
-		this.state = {
-			taskList: []
-		}
 		// Make sure custom methods uses the class "this"
 		this.addNewTask = this.addNewTask.bind(this)
 		this.checkCompleted = this.checkCompleted.bind(this)
@@ -19,16 +20,8 @@ class Home extends Component{
 	}
 
 	componentDidMount() {
-	// axios request to var declared in index.html
-	// ... that's where Express is listening
-	axios.get(`${window.apiAddress}/getTasks?apiKey=gsdf89usf8u9uvsoijsfbdkl34tgrev`)
-	.then((tasksFromApi)=>{
-		// log the JSON response from Express
-		console.log(tasksFromApi)
-		this.setState({
-		taskList: tasksFromApi.data
-		})
-	});
+		// run the action to get task list in the Reducer
+		this.props.getToDoAction();
 	}
 
 	addNewTask(event){
@@ -43,43 +36,27 @@ class Home extends Component{
 				taskName: newTask,
 				taskDate: newTaskDate
 			}
-		}).then((tasksArray)=>{
-			this.setState({
-			taskList: tasksArray.data
-			})
+		}).then(()=>{
+			this.props.getToDoAction();
 		})		
 	}
 
 	checkCompleted(targetId){
-		console.log(targetId)
 		axios({
 			method: "POST",
 			url: `${window.apiAddress}/completeTask?api_key=gsdf89usf8u9uvsoijsfbdkl34tgrev`,
 			data: {
 				targetId: targetId
 			}
-		}).then((tasksArray)=>{
-			console.log(tasksArray)
-			this.setState({
-			taskList: tasksArray.data
-			})
+		}).then(()=>{
+			this.props.getToDoAction();
 		})			
 	}
 
-	formatDate(date){
-		// We get back a mysql date, need to convert it
-		// to a JS date then format
-		var dateObj = new Date(date);
-		if(dateObj == 'Invalid Date'){
-			return 'Invalid Date'
-		}
-		var formattedDate = `${dateObj.getMonth()+1}/${dateObj.getDate()}/${dateObj.getFullYear()}`
-		return formattedDate
-	}
+
 
 	render(){
-		console.log(this.state.taskList);
-		var taskArray = this.state.taskList.map((task,index)=>{
+		var taskArray = this.props.todoState.taskList.map((task,index)=>{
 			var inlineStyle = {}
 			var finished = 0;
 			if (task.finished === 1){
@@ -108,7 +85,7 @@ class Home extends Component{
 						/>
 					</td>
 					<td><Link style={inlineStyle} to={`/task/get/${task.id}`}>{task.task_name}</Link></td>
-					<td>{this.formatDate(task.task_date)}</td>
+					<td>{formatDate(task.task_date)}</td>
 					<td><Link to={`/task/delete/${task.id}`}>Delete</Link></td>
 					<td><Link to={`/task/edit/${task.id}`}>Edit</Link></td>
 				</tr>)
@@ -148,4 +125,21 @@ class Home extends Component{
 
 }
 
-export default Home;
+function mapStateToProps(state){
+	// state = RootReducer
+	return{
+		// key = this.props.KEY will be accesible to this component
+		// value = property of RootReducer
+		todoState: state.todoState
+	}
+}
+
+function mapDispatchToProps(dispatch){
+	// dispatch is teh thing that takes any action
+	// and sends it out to all teh reducers	
+	return bindActionCreators({
+		getToDoAction: getToDoAction
+	}, dispatch)
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Home);

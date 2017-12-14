@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import $ from 'jquery'
-import {Redirect} from 'react-router-dom'
 
 class Delete extends Component{
 	constructor(props) {
@@ -31,7 +30,6 @@ class Delete extends Component{
 	      }
 	    }).done((tasksArray)=>{
 			this.props.history.push('/');
-			console.log("Delete!!")
 	    });
 	}
 
@@ -41,8 +39,7 @@ class Delete extends Component{
 	}
 
 	render(){
-		// console.log(this.props.match.params)
-		var taskId = this.props.match.params.taskId;
+		// var taskId = this.props.match.params.taskId;
 		return(
 			<div className="container">
 				<h2>Are you sure you want to delete {this.state.taskData.task_name}?</h2>
