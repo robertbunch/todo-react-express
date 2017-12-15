@@ -15,10 +15,10 @@ export default function(state = defaultState, action){
 		newState.dueToday = 0;
 		newState.taskList = action.payload.data;
 		newState.taskList.forEach((task)=>{
-			if(task.finished === 0){
+			if(task.finished === 1){
 				newState.finished++;
 			}
-			if(task.finished === 1){
+			if(task.finished === 0){
 				// if(formatDate(task.task_date))
 				var taskDate = (formatDate(task.task_date));
 				var today = formatDate(new Date());

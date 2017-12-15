@@ -25,18 +25,19 @@ function validateKey(key){
 
 // Setup a route to handle React's first request
 router.get('/getTasks', function(req, res, next) {
-	var isKeyValid = validateKey(req.query.api_key);
-	console.log(req.query.api_key)
-	isKeyValid.then((bool)=>{
-		if(bool == true){
+	// Removed isKeyValid so get is easier to test.
+	// var isKeyValid = validateKey(req.query.api_key);
+	// console.log(req.query.api_key)
+	// isKeyValid.then((bool)=>{
+	// 	if(bool == true){
 			connection.query('SELECT * FROM tasks', (error, results)=>{
 				if (error) throw error;
 				res.json(results);
 			})
-		}else{
-			res.json({msg:"badKey"})
-		}
-	});
+		// }else{
+		// 	res.json({msg:"badKey"})
+		// }
+	// });
 });
 
 router.post('/updateTask',(req, res)=>{
