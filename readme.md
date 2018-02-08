@@ -1,5 +1,5 @@
 # A toDo app, built in React/Redux and Express/MySQL
-## Purpose: A React app that uses redux, react-router and AJAX to interact with an Express API connecting to MySQL for AWS deployment course students.
+## Purpose: A React app that uses redux, react-router and AJAX to interact with an Express API connecting to MySQL for AWS deployment course students. [Find the course here](https://www.udemy.com/deploying-web-apps-simplified-quick-or-in-depth-on-aws)
 
 ### Overview
 The React portion was built with [create-react-app](https://github.com/facebookincubator/create-react-app), and the express app with the [express-generator](https://expressjs.com/en/starter/generator.html). [React-Router 4](https://reacttraining.com/react-router/web/guides/philosophy) serves for navigating between the home page, edit, and delete pages. Redux does some simple application state management fot the notification section of the navbar.
