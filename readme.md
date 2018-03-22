@@ -67,6 +67,15 @@ $ sudo apt-get install python-certbot-apache
 $ sudo certbot --apache
 ```
 
+## IMPORTANT - Certbot is going through a major update right now, so the short hand command that I use in the first 3 sections (Front-end, React/Express, & Rails), is going to fail. You can use a much longer command (I mention it in the Flask section) for now to get it to work. Once Certbot stabilizes, I will update the video, if the old command doesn't work.
+
+```
+$ sudo certbot --authenticator standalone --installer apache -d cm.ridiculous-inc.com --pre-hook "systemctl stop apache2" --post-hook "systemctl start apache2"
+```
+
+Optional short explanation: You don't actually need the --pre-hook, or --post-hook commands, those will simply run immediately before and after certbot validates the domain. In this case, stop apache before, start apache after. The command also specifies the domain you want the cert for, as opposed to everything in your /etc/apache2/sites-available folder. For NGINX, just change the --installer to "nginx"
+
+
 ## Front-end
 1. Clone the repository to local (it is possible to simply run the build on the server, but this will take up significant space as npm install will bring a truckload of modules with it)
 2. Enter the front-end folder
